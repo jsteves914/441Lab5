@@ -1,12 +1,10 @@
-# q3_bar_travel_wave_10_including_18_23.py
 import RPi.GPIO as GPIO, time, math
 
-# 10 LEDs; list includes 18 and 23 (from Q1 & Q2). Reorder to match your bar L→R.
 LED_PINS = [5, 6, 12, 13, 16, 18, 19, 21, 23, 26]
 
 F_PWM = 500
 F = 0.2
-PHI_STEP = math.pi / 11   # assignment spec
+PHI_STEP = math.pi / 11   
 
 GPIO.setmode(GPIO.BCM)
 pwms = []
