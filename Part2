@@ -1,10 +1,9 @@
-# q2_two_leds_phase.py
 import RPi.GPIO as GPIO, time, math
 
-LED1, LED2 = 18, 23      # <-- change to your two LED pins
+LED1, LED2 = 18, 23      
 F_PWM = 500
 F = 0.2
-PHI = math.pi/11         # phase lag (rad)
+PHI = math.pi/11         
 
 GPIO.setmode(GPIO.BCM)
 for pin in (LED1, LED2):
