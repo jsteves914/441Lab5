@@ -1,0 +1,24 @@
+# q3_bar_travel_wave.py
+import RPi.GPIO as GPIO, time, math
+
+LED_PINS = [5,6,13,19,26,16,20,21,12,25,24,23]  # <-- replace with your 12 pins, left→right
+F_PWM = 500
+F = 0.2
+PHI_STEP = math.pi/11    # per-LED phase lag
+
+GPIO.setmode(GPIO.BCM)
+pwms = []
+for pin in LED_PINS:
+    GPIO.setup(pin, GPIO.OUT)
+    p = GPIO.PWM(pin, F_PWM); p.start(0); pwms.append(p)
+
+try:
+    t0 = time.time()
+    while True:
+        t = time.time() - t0
+        for i, p in enumerate(pwms):
+            s = math.sin(2*math.pi*F*t - i*PHI_STEP)
+            p.ChangeDutyCycle(100*(s*s))
+finally:
+    for p in pwms: p.stop()
+    GPIO.cleanup()
