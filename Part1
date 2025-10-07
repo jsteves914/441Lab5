@@ -1,21 +1,20 @@
-# q1_single_led.py
 import RPi.GPIO as GPIO, time, math
 
-LED = 18                 # <-- change to your LED pin (BCM numbering)
-F_PWM = 500              # base PWM frequency (Hz)
-F = 0.2                  # brightness frequency (Hz)
+LED = 18                 
+F_PWM = 500              
+F = 0.2                  
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED, GPIO.OUT)
 p = GPIO.PWM(LED, F_PWM)
-p.start(0)               # duty 0..100%
+p.start(0)               
 
 try:
     t0 = time.time()
     while True:
         t = time.time() - t0
         s = math.sin(2*math.pi*F*t)
-        duty = 100*(s*s)                # (sin)^2 in [0,1] → %
+        duty = 100*(s*s)                
         p.ChangeDutyCycle(duty)
 finally:
     p.stop(); GPIO.cleanup()
