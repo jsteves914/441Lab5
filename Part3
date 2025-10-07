@@ -1,16 +1,19 @@
-# q3_bar_travel_wave.py
+# q3_bar_travel_wave_10_including_18_23.py
 import RPi.GPIO as GPIO, time, math
 
-LED_PINS = [5,6,13,19,26,16,20,21,12,25,24,23]  # <-- replace with your 12 pins, left→right
+# 10 LEDs; list includes 18 and 23 (from Q1 & Q2). Reorder to match your bar L→R.
+LED_PINS = [5, 6, 12, 13, 16, 18, 19, 21, 23, 26]
+
 F_PWM = 500
 F = 0.2
-PHI_STEP = math.pi/11    # per-LED phase lag
+PHI_STEP = math.pi / 11   # assignment spec
 
 GPIO.setmode(GPIO.BCM)
 pwms = []
 for pin in LED_PINS:
     GPIO.setup(pin, GPIO.OUT)
-    p = GPIO.PWM(pin, F_PWM); p.start(0); pwms.append(p)
+    p = GPIO.PWM(pin, F_PWM); p.start(0)
+    pwms.append(p)
 
 try:
     t0 = time.time()
