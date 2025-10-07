@@ -1,0 +1,41 @@
+import RPi.GPIO as GPIO, time, math
+
+LED_PINS = [5, 6, 12, 13, 16, 18, 19, 21, 23, 26]
+BUTTON   = 17   
+
+F_PWM = 500
+F = 0.2
+PHI_STEP = math.pi / 11
+
+direction = 1
+
+def toggle_direction(channel):
+    global direction
+    direction *= -1
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+
+pwms = []
+for pin in LED_PINS:
+    GPIO.setup(pin, GPIO.OUT)
+    p = GPIO.PWM(pin, F_PWM); p.start(0)
+    pwms.append(p)
+
+
+GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.add_event_detect(BUTTON, GPIO.RISING, callback=toggle_direction, bouncetime=150)
+
+try:
+    t0 = time.time()
+    while True:  # no sleep
+        t = time.time() - t0
+        for i, p in enumerate(pwms):
+            phi = direction * i * PHI_STEP
+            s = math.sin(2*math.pi*F*t - phi)
+            p.ChangeDutyCycle(100*(s*s))
+finally:
+    for p in pwms:
+        p.ChangeDutyCycle(0); p.stop()
+    GPIO.cleanup()
